@@ -1,4 +1,5 @@
 import postModel from "../models/postModel.js";
+import userModel from "../models/userModel.js";
 
 export async function getAllPost(req,res){
     try {
@@ -92,6 +93,24 @@ export async function deletePost(req,res){
 }
 
 
+export async function getPostByAnotherUser(req,res){
+    try {
+        let id =  req.params.id ;
+        let posts = await postModel.find({postBy:id}).populate("postBy","userName picture createdAt");
+         return res.json({
+            success:true,
+            totalPosts:posts.length,
+            posts
+        })
+    } catch (error) {
+        return res.json({
+            message: "can't get user posts",
+            error
+        })
+    }
+}
+
+
 export async function getPostByUser(req,res){
     try {
         let id =  req.user._id ;
@@ -108,3 +127,18 @@ export async function getPostByUser(req,res){
         })
     }
 }
+
+
+
+
+export async function followingPosts (req, res) {
+  const user = await userModel.findById(req.user._id);
+
+  const posts = await postModel.find({
+    postBy: { $in: user.following }
+  })
+  .populate("postBy")
+  .sort({ createdAt: -1 });
+
+  res.json(posts);
+};

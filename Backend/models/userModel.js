@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    picture:{
+    picture: {
         type: String,
         default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmJKSYHfOBBKY-cdczA98vV6nmveKCHR0RuQ&s"
     },
@@ -25,7 +25,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    refressToken:{
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    refressToken: {
         type: String
     }
 }, {
@@ -34,17 +46,17 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.pre("save", async function () {
-     if(!this.isModified("password")) return;
+    if (!this.isModified("password")) return;
     this.password = await bcrypt.hash(this.password, 10);
-    this.refressToken = jwt.sign({email: this.email , userName: this.userName}, REFRESS_SECRET, {expiresIn: "7d"});
+    this.refressToken = jwt.sign({ email: this.email, userName: this.userName }, REFRESS_SECRET, { expiresIn: "7d" });
 })
 
 userSchema.methods.generateAccessToken = function () {
-    return jwt.sign({email: this.email , _id: this._id}, ACCESS_SECRET);
+    return jwt.sign({ email: this.email, _id: this._id }, ACCESS_SECRET);
 }
 
 userSchema.methods.generateRefressToken = function () {
-    return jwt.sign({email: this.email , _id: this._id}, REFRESS_SECRET);
+    return jwt.sign({ email: this.email, _id: this._id }, REFRESS_SECRET);
 }
 
 

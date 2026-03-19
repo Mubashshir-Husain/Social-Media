@@ -4,15 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function NavBar() {
 
-  let {loggedIn, loading} = useContext(AuthContext)
-
-  if (loading) {
-  return (
-    <div className="p-4 text-center text-gray-500">
-      Loading...
-    </div>
-  );
-}
+  let {loggedIn} = useContext(AuthContext)
 
   return (
     <nav
@@ -40,7 +32,8 @@ export default function NavBar() {
 
           {
             loggedIn && (
-              <li>
+              <>
+                <li>
                 <Link
                   to="/create"
                   className="hover:text-blue-600 transition duration-200"
@@ -48,6 +41,16 @@ export default function NavBar() {
                   CreatePost
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/feed"
+                  className="hover:text-blue-600 transition duration-200"
+                >
+                  Feed
+                </Link>
+              </li>
+              </>
+              
             )
           }
 

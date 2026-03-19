@@ -68,3 +68,17 @@ export async function userProfile(req,res){
     }
 }
 
+
+
+export async function getUserProfile(req,res){
+    try {
+        let id = req.params.id;
+        let data = await userModel.findById(id).select("-password -refressToken -createdAt -updatedAt -email");;
+        return res.json(data);
+    } catch (error) {
+        return res.json({
+            message: "can't get user profile",
+            error
+        })
+    }
+}

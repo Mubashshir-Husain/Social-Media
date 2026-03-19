@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 import api from "../api/api";
 import { Heart, MessageCircle } from "lucide-react";
@@ -6,6 +7,8 @@ import { Heart, MessageCircle } from "lucide-react";
 export default function PostCard({ post, setPosts, showActions = false, onDelete, onEdit }) {
 
   const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   // ✅ NEW STATES
   const [showComments, setShowComments] = useState(false);
@@ -95,13 +98,13 @@ export default function PostCard({ post, setPosts, showActions = false, onDelete
     <div className="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-md transition-all duration-200">
 
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
+        <div onClick={() => navigate(`/profile/${post.postBy._id}`)} className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
           <img
             src={post.postBy?.picture}
             alt="user"
-            className="w-9 h-9 rounded-full object-cover"
+            className="w-9 h-9 cursor-pointer rounded-full object-cover"
           />
-          <h3 className="text-sm font-semibold text-gray-700">
+          <h3 className="text-sm cursor-pointer font-semibold text-gray-700">
             {post.postBy?.userName}
           </h3>
         </div>

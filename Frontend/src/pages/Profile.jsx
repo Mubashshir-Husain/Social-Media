@@ -20,7 +20,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     localStorage.removeItem("token")
-    
+
     setLoggedIn(false)
     navigate("/auth")
   }
@@ -54,7 +54,7 @@ export default function Profile() {
 
     if (activeTab === 0) {
 
-      api.get("/posts/getPostByUser")
+      api.get(`/posts/getPostByUser/${user._id}`)
         .then((res) => {
           setPosts(res.data.posts || [])
           // console.log(res.data.posts)
@@ -119,9 +119,23 @@ export default function Profile() {
           {user?.userName}
         </h2>
 
-        <p className="text-gray-500 text-sm mt-1">
-          @{user?.userName?.toLowerCase()}
-        </p>
+        <div className="flex justify-center gap-6 mt-3 text-sm text-gray-600">
+
+          <div>
+            <span className="font-semibold">
+              {user?.followers?.length || 0}
+            </span>
+            <p>Followers</p>
+          </div>
+
+          <div>
+            <span className="font-semibold">
+              {user?.following?.length || 0}
+            </span>
+            <p>Following</p>
+          </div>
+
+        </div>
 
         <button
           onClick={handleLogout}
@@ -165,8 +179,8 @@ export default function Profile() {
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 {posts.map((post) => (
-            <PostCard key={post._id} post={post}  showActions={true} onEdit={handleEdit}  onDelete={handleDelete} />
-          ))}
+                  <PostCard key={post._id} post={post} showActions={true} onEdit={handleEdit} onDelete={handleDelete} />
+                ))}
               </ul>
 
             ) : (
@@ -186,9 +200,9 @@ export default function Profile() {
 
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                 {likedPosts.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))}
+                {likedPosts.map((post) => (
+                  <PostCard key={post._id} post={post} />
+                ))}
               </ul>
 
             ) : (
@@ -208,9 +222,9 @@ export default function Profile() {
 
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                 {comments.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))}
+                {comments.map((post) => (
+                  <PostCard key={post._id} post={post} />
+                ))}
 
               </ul>
 
