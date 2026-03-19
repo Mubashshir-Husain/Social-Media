@@ -57,7 +57,7 @@ export default function Profile() {
       api.get("/posts/getPostByUser")
         .then((res) => {
           setPosts(res.data.posts || [])
-          console.log(res.data.posts)
+          // console.log(res.data.posts)
         })
         .catch((err) => console.log(err.response?.data))
 
@@ -75,9 +75,10 @@ export default function Profile() {
 
     if (activeTab === 2) {
 
-      api.get("/comments/commentedPosts")
+      api.get("/comments/commentedPost")
         .then((res) => {
-          setComments(res.data.comments || [])
+          // console.log(res.data.posts)
+          setComments(res.data.posts || [])
         })
         .catch((err) => console.log(err.response?.data))
 
@@ -161,7 +162,7 @@ export default function Profile() {
 
             {posts.length > 0 ? (
 
-              <ul className="space-y-3">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 {posts.map((post) => (
             <PostCard key={post._id} post={post}  showActions={true} onEdit={handleEdit}  onDelete={handleDelete} />
@@ -183,7 +184,7 @@ export default function Profile() {
 
             {likedPosts.length > 0 ? (
 
-              <ul className="space-y-3">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                  {likedPosts.map((post) => (
             <PostCard key={post._id} post={post} />
@@ -205,7 +206,7 @@ export default function Profile() {
 
             {comments.length > 0 ? (
 
-              <ul className="space-y-3">
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                  {comments.map((post) => (
             <PostCard key={post._id} post={post} />

@@ -15,7 +15,7 @@ export default function AuthProvider({children}){
   if (token) {
     api.get("/users/userProfile")
       .then((res) => {
-        console.log("USER:", res.data); 
+        // console.log("USER:", res.data); 
         setUser(res.data);
         setLoggedIn(true);
       })

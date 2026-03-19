@@ -94,7 +94,13 @@ export async function getAllComment(req, res) {
     try {
         let postId = req.params.postId;
 
-        let post = await postModel.findById(postId).populate("comments.commentBy", "userName picture");
+        let post = await postModel.findById(postId).populate({
+  path: "comments",
+  populate: {
+    path: "user",
+    select: "userName picture"
+  }
+});
 
         return res.json({
             message: "comments fetched successfully",
